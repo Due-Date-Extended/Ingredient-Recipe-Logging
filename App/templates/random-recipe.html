@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+    <!-- Navigation Bar Placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Random Recipe Section -->
+    <div class="recipe-container">
+        <h1>Random Recipe</h1>
+
+        <div class="recipe-card">
+            <img src="https://source.unsplash.com/400x300/?food" alt="Recipe Image" class="recipe-img">
+            <h2 class="recipe-title">Creamy Tomato Pasta</h2>
+            <p class="recipe-category">Category: <span>Dinner</span></p>
+            <p class="recipe-description">
+                A simple and delicious creamy tomato pasta made with fresh tomatoes, cream, garlic, and herbs.
+            </p>
+            <a href="#" class="view-recipe-btn">View Recipe Details</a>
+        </div>
+
+        <button class="generate-random-btn" onclick="window.location.reload();">Generate New Recipe</button>
+    </div>
+
+    <!-- JavaScript to load navbar -->
+    <script>
+        fetch('navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+                // for the filter by
+                const filterDropdown = document.getElementById("filterBy");
+  
+                if (filterDropdown) {
+                  filterDropdown.addEventListener("change", function () {
+                    const selectedOption = filterDropdown.options[filterDropdown.selectedIndex];
+                    const value = selectedOption.value;
+                    const type = selectedOption.dataset.type;
+  
+                    if (type === "category") {
+                      window.location.href = `home.html?c=${value}`;
+                    } else if (type === "area") {
+                      window.location.href = `home.html?a=${value}`;
+                    }
+                  });
+                }
+                
+                // for the sort by
+                const sortDropdown = document.getElementById("sortBy");
+  
+                sortDropdown.addEventListener("change", function () {
+                    const selectedSort = sortDropdown.value;
+                    const currentUrl = new URL(window.location.href);
+                    const params = currentUrl.searchParams;
+  
+                    // Set the new sort param
+                    params.set("sort", selectedSort);
+  
+                    // Build and navigate to the new URL
+                    currentUrl.search = params.toString();
+                    window.location.href = currentUrl.toString();
+                });
+            })
+            .catch(error => console.error('Error loading navbar:', error));
+    </script>
+
+</body>
+</html>
