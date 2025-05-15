@@ -1,0 +1,86 @@
+
+
+<header class="designNav">
+    <nav>
+        
+        <h1 style="width: 5%;"><a href="home.html">Pantry Pal</a></h1>
+
+        
+
+        <div style="width: 3%;">
+            <label for="sortBy">Sort By:</label>
+            <select id="sortBy">
+                <option value="" selected disabled>-- Select Sort --</option>
+                <option value="az">A - Z</option>
+                <option value="za">Z - A</option>
+            </select>
+        </div>
+
+        <div style="width: 5%;">
+            <label for="filterBy">Filter By:</label>
+            <select name="filterBy" id="filterBy">
+                <option value="" selected disabled>-- Select Category --</option>
+                <option data-type="category" value="starter">Starter</option>
+                <option data-type="category" value="pasta">Pasta</option>
+                <option data-type="category" value="side">Side</option>
+                <option data-type="category" value="breakfast">Breakfast</option>
+                <option data-type="category" value="chicken">Chicken</option>
+                <option data-type="category" value="beef">Beef</option>
+                <option data-type="category" value="lamb">Lamb</option>
+                <option data-type="category" value="pork">Pork</option>
+                <option data-type="category" value="goat">Goat</option>
+                <option data-type="category" value="seafood">Seafood</option>
+                <option data-type="category" value="vegetarian">Vegetarian</option>
+                <option data-type="category" value="vegan">Vegan</option>
+                <option data-type="category" value="dessert">Dessert</option>
+                <option data-type="category" value="miscellaneous">Miscellaneous</option>
+                <optgroup label="Cuisine">
+                    <option data-type="area" value="chinese">Chinese</option>
+                    <option data-type="area" value="indian">Indian</option>
+                    <option data-type="area" value="spanish">Spanish</option>
+                    <option data-type="area" value="japanese">Japanese</option>
+                    <option data-type="area" value="croatian">Croatian</option>
+                    <option data-type="area" value="turkish">Turkish</option>
+                    <option data-type="area" value="egyptian">Egyptian</option>
+                    <option data-type="area" value="filipino">Filipino</option>
+                    <option data-type="area" value="tunisian">Tunisian</option>
+                    <option data-type="area" value="american">American</option>
+                    <option data-type="area" value="italian">Italian</option>
+                    <option data-type="area" value="canadian">Canadian</option>
+                    <option data-type="area" value="british">British</option>
+                    <option data-type="area" value="dutch">Dutch</option>
+                    <option data-type="area" value="greek">Greek</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div style="width: 5%;">
+            <a href="random-recipe.html" class="navButton">Random Recipe</a>
+        </div>
+
+        <div class="row" style="width: 5%;">
+            <section class="search-section">
+                <input type="text" placeholder="Search Recipe">
+                <button type="submit">Search</button>
+            </section>
+        </div>
+
+        <div class="dropdown" style="width: 5%;">
+            <img src="avatar.jpeg" alt="Avatar" class="avatar">
+            <div class="dropdown-content">
+                <a href="ingredient.html">Inventory</a>
+                <a href="createrecipe.html">Create recipe</a>
+                <a href="favorites.html">View favorites</a>
+                <a href="{{ url_for('auth_views.logout_action') }}">Logout</a>
+            </div>
+        </div>
+    
+    </nav>
+
+    <script>
+        const dialog = document.querySelector("dialog");
+        document.querySelector("#open-popup")?.addEventListener("click", () => dialog.showModal());
+        document.querySelector(".close-btn")?.addEventListener("click", () => dialog.close());
+    </script>
+</header>
+
