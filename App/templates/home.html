@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+<body id="homeBody">
+  <div id="navbar"></div>
+  <h1>Welcome to Pantry Pal!</h1>
+
+  <div class="carousel-container card-container">
+      <!-- Dynamic cards will be loaded here -->
+  </div>
+
+  <script>
+    fetch('/navbar')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbar').innerHTML = data;
+
+        // for the filter by
+        const filterDropdown = document.getElementById("filterBy");
+
+        if (filterDropdown) {
+          filterDropdown.addEventListener("change", function () {
+            const selectedOption = filterDropdown.options[filterDropdown.selectedIndex];
+            const value = selectedOption.value;
+            const type = selectedOption.dataset.type;
+
+            if (type === "category") {
+              window.location.href = `home.html?c=${value}`;
+            } else if (type === "area") {
+              window.location.href = `home.html?a=${value}`;
+            }
+          });
+        }
+        
+        // for the sort by
+        const sortDropdown = document.getElementById("sortBy");
+
+        sortDropdown.addEventListener("change", function () {
+            const selectedSort = sortDropdown.value;
+            const currentUrl = new URL(window.location.href);
+            const params = currentUrl.searchParams;
+
+            // Set the new sort param
+            params.set("sort", selectedSort);
+
+            // Build and navigate to the new URL
+            currentUrl.search = params.toString();
+            window.location.href = currentUrl.toString();
+        });
+
+      });
+      
+  </script>
+
+  <main id="top" >
+    <div id="product" style="margin-top: 120px;">
+      <h1 style="text-align: center; margin-bottom: 40px;">All Recipes</h1>
+
+      <div class="card-container" style=" width: 95%; display: flex; flex-wrap: wrap; justify-content: space-evenly; margin-left: 20px;">
+        
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    async function getAndLoadAPIarea(area, sort) {
+      let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${area}`);
+      let data = await response.json();
+
+      let meals = data.meals;
+
+      if (sort === "az") {
+          meals.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
+      } else if (sort === "za") {
+          meals.sort((a, b) => b.strMeal.localeCompare(a.strMeal));
+      }
+
+      let result = '';
+      meals.forEach(meal => {
+          result += `
+              <div onclick="getAndLoadApiRecipe(${meal.idMeal})" class="card">
+              <a href="recipe.html?id=${meal.idMeal}">
+              <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+              </a>
+              <div class="container">
+              <h3><b>${meal.strMeal}</b></h3>
+              <i class="fa fa-bookmark-o" style="float: right; margin-top: 20px;"></i>
+              </div>
+          </div>
+          `;
+      });
+
+      document.querySelector('.card-container').innerHTML = result;
+  }
+
+
+
+    async function getAndLoadAPIcategory(filter, sort) {
+      const formattedFilter = filter.charAt(0).toUpperCase() + filter.slice(1).toLowerCase();
+
+      let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${formattedFilter}`);
+      let data = await response.json();
+      console.log("Data from API: ", data);
+
+      let meals = data.meals;
+
+      if (sort === "az") {
+          meals.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
+      } else if (sort === "za") {
+          meals.sort((a, b) => b.strMeal.localeCompare(a.strMeal));
+      }
+
+      let result = '';
+      meals.forEach(meal => {
+          result += `
+              <div onclick="getAndLoadApiRecipe(${meal.idMeal})" class="card">
+                  <a href="recipe.html?id=${meal.idMeal}">
+                  <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+                  </a>
+                  <div class="container">
+                  <h3><b>${meal.strMeal}</b></h3>
+                  <i class="fa fa-bookmark-o" style="float: right; margin-top: 20px;"></i>
+                  </div>
+              </div>
+          `;
+      });
+
+      const cardContainer = document.querySelector('.card-container');
+      cardContainer.innerHTML = result;
+    }
+
+      
+    
+    async function getAndLoadAPIdata(sort) {
+      let response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=`);
+      let data = await response.json();
+      console.log("Data from API: ", data);
+
+      let meals = data.meals;
+
+      if (sort === "az") {
+          meals.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
+      } else if (sort === "za") {
+          meals.sort((a, b) => b.strMeal.localeCompare(a.strMeal));
+      }
+
+      let result = '';
+
+      meals.forEach(meal => {
+          result += `
+              <div onclick="getAndLoadApiRecipe(${meal.idMeal})" class="card">
+                  <a href="recipe.html?id=${meal.idMeal}">
+                  <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+                  </a>
+                  <div class="container">
+                  <h3><b>${meal.strMeal}</b></h3>
+                  <i class="fa fa-bookmark-o" style="float: right; margin-top: 20px;"></i>
+                  </div>
+              </div>
+          `;
+      });
+
+      const cardContainer = document.querySelector('.card-container');
+      cardContainer.innerHTML = result;
+  }
+
+      // Call the function to fetch and load the API data
+      window.onload = async () => {
+        const params = new URLSearchParams(window.location.search);
+        const category = params.get("c");
+        const area = params.get("a");
+        const sort = params.get("sort");
+
+        if (category) {
+            await getAndLoadAPIcategory(category, sort);
+        } else if (area) {
+            await getAndLoadAPIarea(area, sort);
+        } else {
+            await getAndLoadAPIdata(sort); // Use 'sort' parameter if available
+        }
+      };
+
+
+
+    
+  </script>
+  
+  <footer>
+    <div style=" height:20px; padding:10px; background-color: black; align-content: space-evenly;">
+      
+      <a href="#top" class="skip" id="topSkip" >Skip to top</a>
+    </div>
+  </footer>
+  
+</body>
+</html>
+
