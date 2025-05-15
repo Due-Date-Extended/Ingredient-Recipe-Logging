@@ -1,6 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pantry Pal - Random Recipe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .recipe-container {
+            max-width: 900px;
+            margin: 120px auto 60px;
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .recipe-container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #FF6B6B;
+        }
+
+        .recipe-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.3s ease;
+            animation: slideUp 0.8s ease-in;
+        }
+
+        .recipe-card:hover {
+            transform: scale(1.03);
+        }
+
+        .recipe-img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .recipe-title {
+            font-size: 1.8rem;
+            margin: 15px 0 10px;
+        }
+
+        .recipe-category {
+            font-size: 1rem;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .recipe-description {
+            font-size: 1rem;
+            margin: 10px 0 20px;
+            color: #555;
+        }
+
+        .view-recipe-btn {
+            display: inline-block;
+            background-color: #FF6B6B;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .view-recipe-btn:hover {
+            background-color: #FF3B3B;
+        }
+
+        .generate-random-btn {
+            margin-top: 40px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .generate-random-btn:hover {
+            background-color: #45a049;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
 <body>
 
     <!-- Navigation Bar Placeholder -->
