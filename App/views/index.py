@@ -1,5 +1,5 @@
-from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify
-from App.controllers import create_user, initialize
+from flask import Blueprint, render_template, jsonify, flash
+from App.controllers import initialize
 
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
 
@@ -7,11 +7,20 @@ index_views = Blueprint('index_views', __name__, template_folder='../templates')
 def index_page():
     return render_template('index.html')
 
-@index_views.route('/init', methods=['GET'])
+@index_views.route('/init', methods=['GaET'])
 def init():
     initialize()
     return jsonify(message='db initialized!')
 
 @index_views.route('/health', methods=['GET'])
 def health_check():
-    return jsonify({'status':'healthy'})
+    return jsonify({'status':'healthy'}) 
+
+@index_views.route('/home')
+def home():
+    flash("Logged in")
+    return render_template('home.html')
+
+@index_views.route('/navbar')
+def navbar():
+    return render_template('navbar.html')
