@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <h1>Ingredient Inventory</h1>
+
+        <div class="sort-options">
+            <button class="sort-btn">Sort A-Z</button>
+            <button class="sort-btn">Sort Z-A</button>
+            <button class="sort-btn">Sort by Recently Added</button>
+        </div>
+
+        <div class="add-ingredient">
+            <h2>Add New Ingredient</h2>
+            <form>
+                <input type="text" placeholder="Ingredient Name" required>
+                <input type="number" placeholder="Quantity" required>
+                <select>
+                    <option value="lbs">lbs</option>
+                    <option value="cups">cups</option>
+                    <option value="tsp">tsp</option>
+                    <option value="oz">oz</option>
+                </select>
+                <input type="date" placeholder="Expiration Date" required>
+                <button type="submit">Add Ingredient</button>
+            </form>
+        </div>
+
+        <div class="ingredient-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ingredient</th>
+                        <th>Quantity</th>
+                        <th>Expiration</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tomato</td>
+                        <td>2 cups</td>
+                        <td>2025-05-01</td>
+                        <td class="actions">
+                            <button>Edit</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <<script>
+        window.USER_ID = {{ user.id | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='main.js') }}" defer></script>
+
+
+    <script>
+        fetch('navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+                // for the filter by
+                const filterDropdown = document.getElementById("filterBy");
+  
+                if (filterDropdown) {
+                  filterDropdown.addEventListener("change", function () {
+                    const selectedOption = filterDropdown.options[filterDropdown.selectedIndex];
+                    const value = selectedOption.value;
+                    const type = selectedOption.dataset.type;
+  
+                    if (type === "category") {
+                      window.location.href = `home.html?c=${value}`;
+                    } else if (type === "area") {
+                      window.location.href = `home.html?a=${value}`;
+                    }
+                  });
+                }
+                
+                // for the sort by
+                const sortDropdown = document.getElementById("sortBy");
+  
+                sortDropdown.addEventListener("change", function () {
+                    const selectedSort = sortDropdown.value;
+                    const currentUrl = new URL(window.location.href);
+                    const params = currentUrl.searchParams;
+  
+                    // Set the new sort param
+                    params.set("sort", selectedSort);
+  
+                    // Build and navigate to the new URL
+                    currentUrl.search = params.toString();
+                    window.location.href = currentUrl.toString();
+                });
+            });
+    </script>
+</body>
+</html>
