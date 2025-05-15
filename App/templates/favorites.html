@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+  <!-- Navbar Placeholder -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Favorites Section -->
+  <section class="welcome-container">
+    <div class="favorites-section">
+      <!-- Example Recipe Card -->
+      <div class="recipe-card">
+        <img src="recipe-image.jpg" alt="Recipe Image">
+        <h3>Recipe Title</h3>
+        <div class="star-rating">
+          <input type="radio" id="star5" name="rating" value="5"><label for="star5">&#9733;</label>
+          <input type="radio" id="star4" name="rating" value="4"><label for="star4">&#9733;</label>
+          <input type="radio" id="star3" name="rating" value="3"><label for="star3">&#9733;</label>
+          <input type="radio" id="star2" name="rating" value="2"><label for="star2">&#9733;</label>
+          <input type="radio" id="star1" name="rating" value="1"><label for="star1">&#9733;</label>
+        </div>
+        <button class="details-button">View Details</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- JavaScript to Load Navbar -->
+  <script>
+    fetch('navbar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbar-placeholder').innerHTML = data;
+
+        // Move dialog script here so it works after navbar loads
+        const dialog = document.querySelector("dialog");
+        const openBtn = document.querySelector("#open-popup");
+        const closeBtn = document.querySelector(".close-btn");
+
+        if (openBtn && closeBtn && dialog) {
+          openBtn.addEventListener("click", () => dialog.showModal());
+          closeBtn.addEventListener("click", () => dialog.close());
+        }
+
+        // for the filter by
+        const filterDropdown = document.getElementById("filterBy");
+  
+        if (filterDropdown) {
+            filterDropdown.addEventListener("change", function () {
+            const selectedOption = filterDropdown.options[filterDropdown.selectedIndex];
+            const value = selectedOption.value;
+            const type = selectedOption.dataset.type;
+
+            if (type === "category") {
+                window.location.href = `home.html?c=${value}`;
+            } else if (type === "area") {
+                window.location.href = `home.html?a=${value}`;
+            }
+            });
+        }
+        
+        // for the sort by
+        const sortDropdown = document.getElementById("sortBy");
+
+        sortDropdown.addEventListener("change", function () {
+            const selectedSort = sortDropdown.value;
+            const currentUrl = new URL(window.location.href);
+            const params = currentUrl.searchParams;
+
+            // Set the new sort param
+            params.set("sort", selectedSort);
+
+            // Build and navigate to the new URL
+            currentUrl.search = params.toString();
+            window.location.href = currentUrl.toString();
+        });
+      })
+      .catch(error => console.error('Error loading navbar:', error));
+
+      
+  </script>
+
+</body>
+</html>
